@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Recipe Extractor 🍳
 
-## Getting Started
+AI Recipe Extractor is a full-stack Next.js application that leverages artificial intelligence to extract comprehensive recipes, ingredient lists, and instructions directly from YouTube video links. 
 
-First, run the development server:
+By utilizing Google's Gemini AI and YouTube transcripts, it automatically converts long-form cooking videos or shorts into easy-to-read, structured recipe formats.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **YouTube Link Processing**: Simply paste a YouTube video URL (both standard videos and Shorts are supported).
+- **AI-Powered Extraction**: Uses Google GenAI to intelligently parse the video transcript and extract accurate ingredients and step-by-step instructions.
+- **User Authentication**: Secure login and user management handled via NextAuth.
+- **Recipe Management**: Save, manage, and view your extracted recipes with a persistent MongoDB database.
+- **Modern UI**: Built with Next.js 16, React 19, and Lucide React icons for a clean, responsive, and beautiful user experience.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework**: [Next.js](https://nextjs.org/) (App Router)
+- **Frontend**: [React](https://react.dev/), TypeScript
+- **Authentication**: [NextAuth.js](https://next-auth.js.org/)
+- **Database**: [MongoDB](https://www.mongodb.com/) & [Mongoose](https://mongoosejs.com/)
+- **AI Integration**: [@google/genai](https://www.npmjs.com/package/@google/genai)
+- **Transcript Parsing**: [youtube-transcript](https://www.npmjs.com/package/youtube-transcript)
+- **Deployment**: [Vercel](https://vercel.com/)
 
-## Learn More
+## 🚀 Getting Started
 
-To learn more about Next.js, take a look at the following resources:
+### Prerequisites
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Node.js (v20 or higher recommended)
+- A MongoDB Database URI
+- Google Gemini API Key
+- NextAuth Secret
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Installation
 
-## Deploy on Vercel
+1. Clone the repository:
+   ```bash
+   git clone <your-repo-url>
+   cd ai-recipe-extractor
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Install dependencies:
+   ```bash
+   npm install
+   # or yarn install / pnpm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. Set up environment variables:
+   Create a `.env.local` file in the root directory and ensure you have the following variables configured (you can use your existing `.env.local` if it's already set up):
+   ```env
+   # MongoDB Connection
+   MONGODB_URI=your_mongodb_connection_string
+
+   # NextAuth Configuration
+   NEXTAUTH_URL=http://localhost:3000
+   NEXTAUTH_SECRET=your_nextauth_secret
+
+   # AI API Key
+   GEMINI_API_KEY=your_google_gemini_api_key
+   ```
+
+4. Run the development server:
+   ```bash
+   npm run dev
+   # or yarn dev / pnpm dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## 🛣️ Roadmap
+
+- [x] Basic YouTube transcript fetching
+- [x] AI Recipe extraction via Google GenAI
+- [x] User authentication (NextAuth)
+- [x] Recipe saving and management (MongoDB)
+- [ ] Instagram video caption extraction integration
+- [ ] Quick-commerce platform integration for automated grocery cart generation
+
+## 📄 License
+
+This project is open-source.

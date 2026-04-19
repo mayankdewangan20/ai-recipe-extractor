@@ -40,24 +40,24 @@ export default function Home() {
   const handleExtract = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!url) return;
-    
+
     setIsLoading(true);
     setError(null);
     setResult(null);
-    
+
     try {
       const response = await fetch("/api/extract", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url, language })
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok || data.error) {
         throw new Error(data.error || "Failed to extract recipe.");
       }
-      
+
       setResult(data);
       setSelectedIngredients(new Array(data.ingredients.length).fill(true));
     } catch (err: any) {
@@ -81,13 +81,13 @@ export default function Home() {
           sourceUrl: url
         })
       });
-      
+
       let errorMsg = "Failed to save";
       if (!response.ok) {
         try {
           const data = await response.json();
           if (data.error) errorMsg = data.error;
-        } catch (e) {}
+        } catch (e) { }
         throw new Error(errorMsg);
       }
       alert("Recipe saved to favorites!");
@@ -110,15 +110,22 @@ export default function Home() {
             <h1 className="gradient-text">Recipe AI</h1>
           </div>
           <nav className={styles.nav}>
-            {session ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Hi, {session.user?.name}</span>
-                <Link href="/saved" className={styles.navBtn} style={{ textDecoration: 'none' }}>Saved Recipes</Link>
-                <button onClick={() => signOut()} className={styles.navBtn}>Log Out</button>
-              </div>
-            ) : (
-              <button onClick={() => signIn("google")} className={styles.navBtn}>Login with Google</button>
-            )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <Link href="/about" className={styles.navBtn} style={{ textDecoration: 'none' }}>About</Link>
+              {session && (
+                <Link href="/saved" className={styles.navBtn} style={{ textDecoration: 'none' }}>Saved</Link>
+              )}
+              {session ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', borderLeft: '1px solid var(--border-color)', paddingLeft: '16px' }}>
+                  <span style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Hi, {session.user?.name}</span>
+                  <button onClick={() => signOut()} className={styles.navBtn}>Log Out</button>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', alignItems: 'center', borderLeft: '1px solid var(--border-color)', paddingLeft: '16px' }}>
+                  <button onClick={() => signIn("google")} className={styles.navBtn}>Login</button>
+                </div>
+              )}
+            </div>
           </nav>
         </header>
 
@@ -133,15 +140,15 @@ export default function Home() {
 
           <form className={`${styles.inputWrapper} glass-panel`} onSubmit={handleExtract}>
             <Link2 className={styles.inputIcon} size={20} />
-            <input 
-              type="url" 
-              placeholder="Paste Instagram or YouTube video link here..." 
+            <input
+              type="url"
+              placeholder="Paste Instagram or YouTube video link here..."
               className={styles.urlInput}
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               required
             />
-            <select 
+            <select
               className={styles.langSelect}
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
@@ -150,8 +157,8 @@ export default function Home() {
               <option value="English">English</option>
               <option value="Hindi">Hindi</option>
             </select>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className={styles.extractBtn}
               disabled={isLoading || !url}
             >
@@ -172,14 +179,14 @@ export default function Home() {
               <div>
                 <h3>{result.title}</h3>
                 <div className={styles.badges} style={{ marginTop: '12px' }}>
-                  <span className={styles.badge}><Video size={14}/> Extracted from Video</span>
+                  <span className={styles.badge}><Video size={14} /> Extracted from Video</span>
                 </div>
               </div>
               {session ? (
-                <button 
-                  onClick={handleSave} 
+                <button
+                  onClick={handleSave}
                   disabled={isSaving}
-                  className={styles.extractBtn} 
+                  className={styles.extractBtn}
                   style={{ padding: '10px 20px', fontSize: '0.9rem' }}
                 >
                   {isSaving ? <Loader2 className={styles.spinIcon} size={16} /> : <BookmarkPlus size={18} />}
@@ -198,8 +205,8 @@ export default function Home() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                     <h4 className={styles.sectionTitle} style={{ marginBottom: 0 }}>Ingredients</h4>
                     <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: 'var(--text-secondary)', cursor: 'pointer' }}>
-                      <input 
-                        type="checkbox" 
+                      <input
+                        type="checkbox"
                         checked={selectedIngredients.length > 0 && selectedIngredients.every(Boolean)}
                         onChange={toggleAllIngredients}
                         style={{ accentColor: 'var(--accent-color)', width: '16px', height: '16px', cursor: 'pointer' }}
@@ -207,7 +214,7 @@ export default function Home() {
                       Select All
                     </label>
                   </div>
-                  <button 
+                  <button
                     onClick={handleCopyIngredients}
                     className={styles.copyBtn}
                     title="Copy selected ingredients"
@@ -219,7 +226,7 @@ export default function Home() {
                 <ul className={styles.ingredientList}>
                   {result.ingredients.map((item: string, i: number) => (
                     <li key={i} className={styles.ingredientItem} style={{ opacity: selectedIngredients[i] ? 1 : 0.5, transition: 'opacity 0.2s', cursor: 'pointer' }} onClick={() => toggleIngredient(i)}>
-                      <input 
+                      <input
                         type="checkbox"
                         checked={selectedIngredients[i] || false}
                         onChange={() => toggleIngredient(i)}
