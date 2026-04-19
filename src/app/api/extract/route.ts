@@ -25,8 +25,9 @@ export async function POST(req: Request) {
         const transcript = await YoutubeTranscript.fetchTranscript(videoId);
         rawText = transcript.map(t => t.text).join(" ");
       } catch (e: any) {
+        console.error("Transcript Error:", e.message);
         return NextResponse.json({ 
-          error: "Could not extract transcript. Ensure the video has Closed Captions (CC) enabled. (Shorts often do not have CC)." 
+          error: `Transcript Error: ${e.message || "Ensure the video has CC enabled."} (Shorts often do not have CC).` 
         }, { status: 400 });
       }
     } else if (url.includes("instagram.com/reel") || url.includes("instagram.com/p")) {
